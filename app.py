@@ -5,7 +5,7 @@ logging.basicConfig(filename='calculations.log', level=logging.INFO, format='%(a
 
 def calc_eval(x:str) -> str:
     try:
-        logging.info(f"Given match: {x} = Result: {eval(x)}")
+        # logging.info(f"Given match: {x} = Result: {eval(x)}")
         return str(eval(x))
     except ZeroDivisionError:
         return 'No devision from zero'
