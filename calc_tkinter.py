@@ -1,44 +1,43 @@
 
-from tkinter import *
-from Testing import calc_3nums, calculator, calculator_chooser, calc_eval
-from math import sqrt
+from tkinter import StringVar, Tk, Menu, Button, W, Label
+from app import calc_eval, sqrt_func
+import logging
+
+logging.basicConfig(filename='calculations.log', level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 
 window =Tk()
+window.title('Calculator')
 user_input = StringVar()
 menu = Menu(window)
 window.config(menu=menu)
 submenu = Menu(menu, tearoff = 0)
 window.geometry("320x430")
-menu.add_cascade(labe="Menu", menu=submenu)
+menu.add_cascade(label="Menu", menu=submenu)
 submenu.add_command(label="Exit", command=window.destroy)
 
 starting_text = ""
 input_text = StringVar()
 
-def printing(num):
+def printing(num:int) -> None:
     global starting_text
     starting_text = starting_text + str(num)
     input_text.set(starting_text)
 
-def clearing():
+def clearing() -> None:
     global starting_text
     starting_text = ""
     input_text.set(starting_text)
 
-def equal():
+def equal() -> None:
     global starting_text
-    # starting_text = calculator_chooser(x for x in starting_text)
-    starting_text = str(calc_eval(starting_text))
+    starting_text = calc_eval(starting_text)
     input_text.set(starting_text)
 
-def sqrt_func():
+def sqrt_button() -> None:
     global starting_text
-    try:
-        starting_text = str(sqrt(int(starting_text)))
-    except ValueError:
-        starting_text = 'Only one number allowed'
+    starting_text = sqrt_func(starting_text)
     input_text.set(starting_text)
-
+    
 
 button_eql = Button(window, text="=",height= 5, width=10, bg='#DFDFDF', command=lambda: equal())
 button1 = Button(window, text="1",height= 5, width=10, command=lambda: printing(1))
@@ -57,12 +56,10 @@ button_dev = Button(window, text="/",height= 5, width=10, command=lambda: printi
 button_multi = Button(window, text="X",height= 5, width=10, command=lambda: printing('*'))
 button_min = Button(window, text="-",height= 5, width=10, command=lambda: printing('-'))
 button_plus = Button(window, text="+",height= 5, width=10, command=lambda: printing('+'))
-button_sqrt = Button(window, text="√",height= 5, width=10, command=lambda: sqrt_func())
+button_sqrt = Button(window, text="√",height= 5, width=10, command=lambda: sqrt_button())
 window.bind("<Return>", lambda event: equal())
 
-entry_field = Entry(window, textvariable=input_text)
-result = Label(window, text="")
-status = Label(window, text="Calculating...", bd=1, relief=SUNKEN, anchor=W)
+entry_field = Label(window, textvariable=input_text, width=17, font=('Helvetica 12'))
 
 entry_field.grid(row=0, column=0, columnspan=2)
 button_C.grid(row=0, column=2)
@@ -84,9 +81,5 @@ button_dot.grid(row=4, column=0, sticky =W)
 button0.grid(row=4, column=1, sticky=W)
 button_eql.grid(row=4, column=3, sticky=W)
 button_sqrt.grid(row=4, column=2, sticky=W)
-
-
-result.grid(row=6, column=0)
-# status.grid(row=7, column=0)
 
 window.mainloop()
